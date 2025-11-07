@@ -84,3 +84,16 @@ def eliminar_por_titulo(titulo: str) -> int:
         return 0
     finally:
         session.close()
+
+def buscar_por_categoria(categoria_id: int):
+    """Devuelve los libros que pertenecen a una categoría específica."""
+    session = SessionLocal()
+    try:
+        stmt = (
+            select(Libro)
+            .where(Libro.categoria_id == categoria_id)
+            .order_by(Libro.titulo.asc())
+        )
+        return session.scalars(stmt).all()
+    finally:
+        session.close()
