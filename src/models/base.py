@@ -1,5 +1,5 @@
 from pathlib import Path
-from sqalchemy import create_engine, Column, Integer, String, Float
+from sqalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
 # clase base para modelos ORM
