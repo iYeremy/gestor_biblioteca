@@ -1,4 +1,4 @@
-from sqlalchemy import select, update, delete
+from sqlalchemy import select, update, delete, func
 from typing import Iterable, Optional
 from sqlalchemy.exc import SQLAlchemyError
 from models.libro import Libro
@@ -34,5 +34,53 @@ def buscar_por_autor(autor: str) -> Iterable[Libro]:
         stmt = select(Libro).where(Libro.autor == autor).order_by(
         Libro.titulo.asc())
         return session.scalars(stmt).all()
+    finally:
+        session.close()
+
+def actualizar_precio(titulo: str, nuevo_precio: float) -> bool:
+    """
+    Actualiza el precio del primer libro con ese título.
+
+    Retorna True si se actualizó algún registro.
+    """
+    session = SessionLocal()
+    try:
+        existe_stmt = select(Libro.id_libro).where(Libro.titulo == titulo).limit(1)
+        if not session.execute(existe_stmt).first():
+            return False
+        stmt = (
+            update(Libro)
+            .where(Libro.titulo == titulo)
+            .values(precio=nuevo_precio)
+        )
+        session.execute(stmt)
+        session.commit()
+        return True
+    except SQLAlchemyError as e:
+        session.rollback()
+        print("Error en actualización. Transacción revertida.")
+        print("Detalle:", e)
+        return False
+    finally:
+        session.close()
+
+
+def eliminar_por_titulo(titulo: str) -> int:
+    """Elimina libros por título. Retorna la cantidad eliminada."""
+    session = SessionLocal()
+    try:
+        count_stmt = select(func.count()).where(Libro.titulo == titulo)
+        total = session.execute(count_stmt).scalar_one()
+        if total == 0:
+            return 0
+        stmt = delete(Libro).where(Libro.titulo == titulo)
+        session.execute(stmt)
+        session.commit()
+        return total
+    except SQLAlchemyError as e:
+        session.rollback()
+        print("Error en eliminación. Transacción revertida.")
+        print("Detalle:", e)
+        return 0
     finally:
         session.close()
