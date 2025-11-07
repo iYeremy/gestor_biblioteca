@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Float
-import base.py as Base
-
+from base import Base
 class Libro(Base):
+
     """tabla 'libros'
     - id: PRIMARY KEY AUTOINC
     - titulo : TEXT
@@ -18,4 +18,3 @@ class Libro(Base):
     def __repr__(self) -> str:
         return f"""<Libro id ={self.id} titulo='{self.titulo}' 
         autor='{self.autor}' precio={self.precio:.2f} >"""
-    
