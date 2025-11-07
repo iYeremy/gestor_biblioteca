@@ -26,3 +26,13 @@ def listar() -> Iterable[Libro]:
         return session.scalars(stmt).all()
     finally:
         session.close()
+
+def buscar_por_autor(autor: str) -> Iterable[Libro]:
+    """Filtra libros por autor"""
+    session = SessionLocal()
+    try:
+        stmt = select(Libro).where(Libro.autor == autor).order_by(
+        Libro.titulo.asc())
+        return session.scalars(stmt).all()
+    finally:
+        session.close()
