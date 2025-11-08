@@ -142,7 +142,7 @@ Cada vista se comunica **solo con los controladores**, no con los modelos direct
 
 ## Notas técnicas
 
-> [!INFO]
+> [!NOTE]
 > Las tablas se crean automáticamente con `Base.metadata.create_all(engine)` la primera vez que se ejecuta el sistema.  
 > Por defecto, la base de datos `biblioteca.db` se almacena en la carpeta `datos/`.
 
