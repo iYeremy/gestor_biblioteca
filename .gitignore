@@ -1,0 +1,51 @@
+# --- Archivos de entorno ---
+.env
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- Archivos de base de datos y datos temporales ---
+datos/
+*.db
+*.sqlite3
+
+# --- Archivos de logs ---
+*.log
+logs/
+log.txt
+
+# --- Archivos de caché y configuración local ---
+.cache/
+*.bak
+*.swp
+*.tmp
+*.DS_Store
+
+# --- Archivos de compilación de Python ---
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# --- Archivos específicos de IDEs ---
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# --- Archivos del sistema ---
+Thumbs.db
+desktop.ini
+
+# --- Archivos de testing ---
+.coverage
+pytest_cache/
+htmlcov/
+
+# --- Archivos específicos del proyecto ---
+# Carpeta utils podría tener scripts locales o temporales
+src/__pycache__/
+src/*/__pycache__/
