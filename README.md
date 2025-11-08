@@ -37,56 +37,51 @@ gestor_biblioteca/
 │   └── menu_categorias.py    # Submenú de categorías
 │
 └── main.py                   # Punto de entrada de la aplicación
-Tipo de arquitectura: MVC
-Lenguaje: Python 3.11+
-ORM: SQLAlchemy 2.0
-Base de datos: SQLite (por defecto)
+```
 
-Arquitectura MVC
-Modelo (models/)
-Define las clases ORM y su estructura relacional. Contiene Libro y Categoria, además de la configuración base (engine, SessionLocal, etc.).
+**Tipo de arquitectura:** MVC  
+**Lenguaje:** Python 3.11+  
+**ORM:** SQLAlchemy 2.0  
+**Base de datos:** SQLite (por defecto)
+
+---
+
+## Arquitectura MVC
+
+### Modelo (`models/`)
+Define las clases ORM y su estructura relacional. Contiene `Libro` y `Categoria`, además de la configuración base (`engine`, `SessionLocal`, etc.).  
 Cada clase refleja una tabla en la base de datos y define relaciones con claves foráneas.
 
-Controlador (controller/)
-Gestiona la lógica de negocio y operaciones CRUD. No maneja la entrada/salida directa, sino que coordina las acciones entre la vista y el modelo.
+### Controlador (`controller/`)
+Gestiona la lógica de negocio y operaciones CRUD. No maneja la entrada/salida directa, sino que coordina las acciones entre la vista y el modelo.  
 Ejemplo: insertar un libro, buscar por autor o eliminar por título.
 
-Vista (view/)
+### Vista (`view/`)
 Maneja la interacción con el usuario. Presenta menús y recoge entradas en consola (CLI). Llama a los métodos de los controladores y muestra los resultados.
 
-Separación de responsabilidades:
+**Separación de responsabilidades:**
+- La vista nunca accede directamente a SQLAlchemy.  
+- El controlador no formatea texto ni imprime.  
+- El modelo no conoce la interfaz ni la lógica de flujo.
 
-La vista nunca accede directamente a SQLAlchemy.
+---
 
-El controlador no formatea texto ni imprime.
+## Modelos y relaciones
 
-El modelo no conoce la interfaz ni la lógica de flujo.
+### Libro
+- id (PK)  
+- titulo  
+- autor  
+- precio  
+- categoria_id (FK → Categoria.id)
 
-Modelos y relaciones
-Libro
+### Categoria
+- id (PK)  
+- nombre  
+- descripcion  
+- libros (relación inversa hacia Libro)
 
-id (PK)
-
-titulo
-
-autor
-
-precio
-
-categoria_id (FK → Categoria.id)
-
-Categoria
-
-id (PK)
-
-nombre
-
-descripcion
-
-libros (relación inversa hacia Libro)
-
-python
-Copiar código
+```python
 # Ejemplo simplificado de relación
 class Libro(Base):
     __tablename__ = "libros"
@@ -103,113 +98,112 @@ class Categoria(Base):
     nombre = Column(String(100))
     descripcion = Column(String(200))
     libros = relationship("Libro", back_populates="categoria", cascade="all, delete")
-Relación:
-Una categoría puede contener muchos libros (1 → N).
-Un libro pertenece exactamente a una categoría (N → 1).
+```
 
-Controladores
-libro_controller.py
+**Relación:**  
+Una categoría puede contener muchos libros (**1 → N**).  
+Un libro pertenece exactamente a una categoría (**N → 1**).
+
+---
+
+## Controladores
+
+### `libro_controller.py`
 Incluye funciones para:
+- `insertar(titulo, autor, precio, categoria_id)`
+- `listar()`
+- `buscar_por_autor(autor)`
+- `buscar_por_categoria(categoria_id)`
+- `actualizar_precio(titulo, nuevo_precio)`
+- `eliminar_por_titulo(titulo)`
 
-insertar(titulo, autor, precio, categoria_id)
-
-listar()
-
-buscar_por_autor(autor)
-
-buscar_por_categoria(categoria_id)
-
-actualizar_precio(titulo, nuevo_precio)
-
-eliminar_por_titulo(titulo)
-
-categoria_controller.py
+### `categoria_controller.py`
 Incluye funciones para:
+- `crear(nombre, descripcion)`
+- `listar()`
+- `eliminar(id)`
 
-crear(nombre, descripcion)
+**Gestión de transacciones:**
+- Uso de `SessionLocal()` para abrir sesión.  
+- Estructura `try/except/finally` para commit, rollback y cierre.  
+- Manejo de `SQLAlchemyError` para revertir operaciones fallidas.
 
-listar()
+---
 
-eliminar(id)
+## Vistas (CLI)
 
-Todos los controladores gestionan transacciones seguras:
-
-Usan SessionLocal() para abrir sesión.
-
-Manejan try/except/finally para commit, rollback y cierre.
-
-Capturan SQLAlchemyError para revertir ante fallos.
-
-Vistas (CLI)
 Diseñadas para evitar un “menú todopoderoso” y mejorar la modularidad:
 
-main_menu.py: menú principal del sistema.
+- `main_menu.py`: menú principal del sistema.  
+- `menu_libros.py`: submenú con operaciones de libros.  
+- `menu_categorias.py`: submenú con operaciones de categorías.
 
-menu_libros.py: submenú con operaciones de libros.
+Cada vista se comunica **solo con los controladores**, no con los modelos directamente.
 
-menu_categorias.py: submenú con operaciones de categorías.
+---
 
-Cada vista se comunica solo con los controladores, no con los modelos directamente.
+## Notas técnicas
 
-Notas técnicas
-[INFO]
+**[INFO]**
+- Las tablas se crean automáticamente con `Base.metadata.create_all(engine)` la primera vez que se ejecuta el sistema.
+- Por defecto, la base de datos `biblioteca.db` se almacena en la carpeta `datos/`.
 
-Las tablas se crean automáticamente con Base.metadata.create_all(engine) la primera vez que se ejecuta el sistema.
-
-Por defecto, la base de datos biblioteca.db se almacena en la carpeta datos/.
-
-[DEPENDENCIAS]
-
-SQLAlchemy >= 2.0
-
-Python >= 3.11
+**[DEPENDENCIAS]**
+- SQLAlchemy >= 2.0  
+- Python >= 3.11  
 
 Instalación:
-
-bash
-Copiar código
+```bash
 pip install sqlalchemy
-[TAG: diseño]
+```
 
-Arquitectura modular
+**[TAG: diseño]**
+- Arquitectura modular  
+- Compatible con futura migración a interfaz gráfica o API REST (Flask/FastAPI)
 
-Compatible con futura migración a interfaz gráfica o API REST (Flask/FastAPI)
+---
 
-Diagrama de base de datos
-(Espacio reservado para el diagrama entidad-relación, exportado desde DBeaver o Draw.io)
+## Diagrama de base de datos
 
-csharp
-Copiar código
+*(Espacio reservado para el diagrama entidad-relación, exportado desde DBeaver o Draw.io)*
+
+```text
 [ Aquí irá el diagrama de la base de datos ]
-Instalación y uso
-Clonar el repositorio:
+```
 
-bash
-Copiar código
+---
+
+## Instalación y uso
+
+### Clonar el repositorio
+```bash
 git clone https://github.com/usuario/gestor_biblioteca.git
 cd gestor_biblioteca
-Crear el entorno virtual (opcional pero recomendado):
+```
 
-bash
-Copiar código
+### Crear entorno virtual (opcional pero recomendado)
+```bash
 python -m venv .venv
 source .venv/bin/activate  # En Linux
 .venv\Scripts\activate     # En Windows
-Instalar dependencias:
-
-bash
-Copiar código
-pip install -r requirements.txt
-Ejecutar el sistema:
-
-bash
-Copiar código
-python main.py
-Autoría
-Proyecto académico desarrollado por:
-
-Yeremy — Ingeniería de Sistemas, Universidad Distrital
-
-Versión: 1.0
-Licencia: MIT
 ```
+
+### Instalar dependencias
+```bash
+pip install -r requirements.txt
+```
+
+### Ejecutar el sistema
+```bash
+python main.py
+```
+
+---
+
+## Autoría
+
+**Proyecto académico desarrollado por:**  
+Yeremy — Ingeniería de Sistemas, Universidad Distrital  
+
+**Versión:** 1.0  
+**Licencia:** MIT
