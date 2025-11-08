@@ -4,11 +4,11 @@ from sqlalchemy.exc import SQLAlchemyError
 from models.libro import Libro
 from models.base import SessionLocal
 
-def insertar(titulo: str, autor: str, precio: float) -> None:
+def insertar(titulo: str, autor: str, precio: float, categoria_id: int) -> None:
     """crea un libro y da check a la transaccion"""
     session = SessionLocal()
     try:
-        nuevo = Libro(titulo=titulo, autor=autor, precio=precio)
+        nuevo = Libro(titulo=titulo, autor=autor, precio=precio, categoria_id=categoria_id)
         session.add(nuevo)
         session.commit()
     except SQLAlchemyError as e:
