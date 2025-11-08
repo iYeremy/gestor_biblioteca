@@ -203,7 +203,7 @@ python main.py
 ## Autoría
 
 **Proyecto académico desarrollado por:**  
-Yeremy — Ingeniería de Sistemas, Universidad Distrital
+Yeremy Vega 20242020233— Ingeniería de Sistemas, Universidad Distrital
 
 **Versión:** 1.0  
 **Licencia:** MIT
