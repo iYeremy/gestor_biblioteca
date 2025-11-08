@@ -142,12 +142,14 @@ Cada vista se comunica **solo con los controladores**, no con los modelos direct
 
 ## Notas técnicas
 
-**[INFO]**
+> [!INFO]
+> Las tablas se crean automáticamente con `Base.metadata.create_all(engine)` la primera vez que se ejecuta el sistema.  
+> Por defecto, la base de datos `biblioteca.db` se almacena en la carpeta `datos/`.
 
--   Las tablas se crean automáticamente con `Base.metadata.create_all(engine)` la primera vez que se ejecuta el sistema.
--   Por defecto, la base de datos `biblioteca.db` se almacena en la carpeta `datos/`.
+> [!IMPORTANT]
+> Este proyecto requiere versiones modernas de Python y SQLAlchemy.
 
-**[DEPENDENCIAS]**
+**Dependencias**
 
 -   SQLAlchemy >= 2.0
 -   Python >= 3.11
@@ -156,21 +158,6 @@ Instalación:
 
 ```bash
 pip install sqlalchemy
-```
-
-**[TAG: diseño]**
-
--   Arquitectura modular
--   Compatible con futura migración a interfaz gráfica o API REST (Flask/FastAPI)
-
----
-
-## Diagrama de base de datos
-
-_(Espacio reservado para el diagrama entidad-relación, exportado desde DBeaver o Draw.io)_
-
-```text
-[ Aquí irá el diagrama de la base de datos ]
 ```
 
 ---
