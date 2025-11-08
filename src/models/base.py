@@ -26,7 +26,9 @@ lock = Lock()
 # fabrica de seciones
 SessionFactory = sessionmaker(
     bind=engine, autoflush=False, 
-    autocommit=False, future=True, 
+    autocommit=False, 
+    expire_on_commit=False,
+    future=True, 
     )
 
 # cada hilo obtiene su propia sesion pero aislada
