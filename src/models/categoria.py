@@ -16,7 +16,7 @@ class Categoria(Base):
     descripcion = Column(String, nullable=False)
 
     # relacion uno a muchos
-    libros = relationship("Libro", back_populates="categoria")
+    libros = relationship("Libro", back_populates="categoria", cascade="all, delete")
 
     def __repr__(self) -> str:
         return f"""<Categoria id_categoria ={self.id_categoria} nombre='{self.nombre}' descripcion='{self.descripcion}'>"""

@@ -16,7 +16,7 @@ class Libro(Base):
     id_libro = Column(Integer, primary_key=True, autoincrement=True)
     
     # FK hacia categorias
-    categoria_id = Column(Integer, ForeignKey("categorias.id_categoria"))
+    categoria_id = Column(Integer, ForeignKey("categorias.id_categoria"), nullable=False)
     
     # relacion inversa
     categoria = relationship("Categoria", back_populates="libros")
@@ -26,10 +26,10 @@ class Libro(Base):
     precio = Column(Float, nullable=False)
 
     def __repr__(self) -> str:
-        return f"""
-        <Libro id_libro ={self.id_libro} 
-        categoria_id ={self.categoria_id} 
-        titulo='{self.titulo}' 
-        autor='{self.autor}' 
-        precio={self.precio:.2f} >
-        """
+        return (
+            f"<Libro id_libro={self.id_libro} "
+            f"categoria_id={self.categoria_id} "
+            f"titulo='{self.titulo}' "
+            f"autor='{self.autor}' "
+            f"precio={self.precio:.2f}>"
+        )
