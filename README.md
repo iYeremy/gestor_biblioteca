@@ -36,7 +36,11 @@ gestor_biblioteca/
 │   ├── menu_libros.py        # Submenú de libros
 │   └── menu_categorias.py    # Submenú de categorías
 │
+├── utils/
+│   └── validaciones.py       # Funciones reutilizables de validación de entrada
+│
 └── main.py                   # Punto de entrada de la aplicación
+
 ```
 
 **Tipo de arquitectura:** MVC  
@@ -62,6 +66,9 @@ Ejemplo: insertar un libro, buscar por autor o eliminar por título.
 
 Maneja la interacción con el usuario. Presenta menús y recoge entradas en consola (CLI). Llama a los métodos de los controladores y muestra los resultados.
 
+### Utils (utils/)
+
+Contiene funciones auxiliares y validaciones de entrada compartidas por las vistas, evitando repetir lógica en los menús.
 **Separación de responsabilidades:**
 
 -   La vista nunca accede directamente a SQLAlchemy.
