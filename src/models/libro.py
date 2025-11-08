@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from sqlalchemy.orm import relationship
-from base import Base
+from .base import Base
 class Libro(Base):
 
     """tabla 'libros'
@@ -16,7 +16,7 @@ class Libro(Base):
     id_libro = Column(Integer, primary_key=True, autoincrement=True)
     
     # FK hacia categorias
-    categoria_id = Column(Integer, ForeignKey("categorias.id"))
+    categoria_id = Column(Integer, ForeignKey("categorias.id_categoria"))
     
     # relacion inversa
     categoria = relationship("Categoria", back_populates="libros")
@@ -28,8 +28,7 @@ class Libro(Base):
     def __repr__(self) -> str:
         return f"""
         <Libro id_libro ={self.id_libro} 
-        categoria_id ={self.id_categoria_id} 
-        categoria ={self.id_categoria} 
+        categoria_id ={self.categoria_id} 
         titulo='{self.titulo}' 
         autor='{self.autor}' 
         precio={self.precio:.2f} >
