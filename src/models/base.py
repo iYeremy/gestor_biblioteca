@@ -17,3 +17,10 @@ engine = create_engine(DB_URL, echo=True, future=True)
 
 # fabrica de seciones
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False, future=True)
+
+
+def init_db() -> None:
+    """Crea las tablas si no existen aun."""
+    from . import categoria, libro  # pylint: disable=unused-import
+
+    Base.metadata.create_all(bind=engine)
